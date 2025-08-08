@@ -1,0 +1,2938 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dave Mode 2.0 - AI Development Partner</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css"
+    />
+    <style>
+      :root {
+        --primary-color: #4a6fa5;
+        --secondary-color: #6c757d;
+        --success-color: #28a745;
+        --danger-color: #dc3545;
+        --warning-color: #ffc107;
+        --info-color: #17a2b8;
+        --light-color: #f8f9fa;
+        --dark-color: #343a40;
+      }
+
+      body {
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        background-color: #f5f7fa;
+        color: #333;
+      }
+
+      .navbar-brand {
+        font-weight: 700;
+        font-size: 1.5rem;
+      }
+
+      .nav-tabs .nav-link {
+        color: var(--secondary-color);
+        font-weight: 500;
+      }
+
+      .nav-tabs .nav-link.active {
+        color: var(--primary-color);
+        font-weight: 600;
+      }
+
+      .card {
+        border: none;
+        border-radius: 10px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        margin-bottom: 20px;
+      }
+
+      .card-header {
+        background-color: var(--primary-color);
+        color: white;
+        border-radius: 10px 10px 0 0 !important;
+        font-weight: 600;
+      }
+
+      .btn-primary {
+        background-color: var(--primary-color);
+        border-color: var(--primary-color);
+      }
+
+      .btn-primary:hover {
+        background-color: #3a5a80;
+        border-color: #3a5a80;
+      }
+
+      .form-control:focus {
+        border-color: var(--primary-color);
+        box-shadow: 0 0 0 0.25rem rgba(74, 111, 165, 0.25);
+      }
+
+      .code-block {
+        background-color: #f8f9fa;
+        border: 1px solid #dee2e6;
+        border-radius: 5px;
+        padding: 15px;
+        font-family: "Courier New", Courier, monospace;
+        white-space: pre-wrap;
+        max-height: 400px;
+        overflow-y: auto;
+      }
+
+      .file-item {
+        border: 1px solid #dee2e6;
+        border-radius: 5px;
+        padding: 10px;
+        margin-bottom: 10px;
+        background-color: white;
+      }
+
+      .file-item .file-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 10px;
+      }
+
+      .file-item .file-name {
+        font-weight: 600;
+        color: var(--primary-color);
+      }
+
+      .file-item .file-actions {
+        display: flex;
+        gap: 5px;
+      }
+
+      .issue-item {
+        border-left: 4px solid;
+        padding: 10px;
+        margin-bottom: 10px;
+        background-color: white;
+        border-radius: 0 5px 5px 0;
+      }
+
+      .issue-item.critical {
+        border-left-color: var(--danger-color);
+      }
+
+      .issue-item.high {
+        border-left-color: #fd7e14;
+      }
+
+      .issue-item.medium {
+        border-left-color: var(--warning-color);
+      }
+
+      .issue-item.low {
+        border-left-color: var(--info-color);
+      }
+
+      .issue-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 5px;
+      }
+
+      .issue-severity {
+        padding: 2px 8px;
+        border-radius: 12px;
+        font-size: 0.75rem;
+        font-weight: 600;
+        text-transform: uppercase;
+      }
+
+      .issue-severity.critical {
+        background-color: var(--danger-color);
+        color: white;
+      }
+
+      .issue-severity.high {
+        background-color: #fd7e14;
+        color: white;
+      }
+
+      .issue-severity.medium {
+        background-color: var(--warning-color);
+        color: var(--dark-color);
+      }
+
+      .issue-severity.low {
+        background-color: var(--info-color);
+        color: white;
+      }
+
+      .agent-card {
+        border: 1px solid #dee2e6;
+        border-radius: 5px;
+        padding: 15px;
+        margin-bottom: 15px;
+        background-color: white;
+      }
+
+      .agent-card .agent-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 10px;
+      }
+
+      .agent-card .agent-name {
+        font-weight: 600;
+        color: var(--primary-color);
+      }
+
+      .agent-card .agent-stats {
+        display: flex;
+        gap: 15px;
+      }
+
+      .agent-card .agent-stat {
+        text-align: center;
+      }
+
+      .agent-card .agent-stat-value {
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: var(--primary-color);
+      }
+
+      .agent-card .agent-stat-label {
+        font-size: 0.75rem;
+        color: var(--secondary-color);
+        text-transform: uppercase;
+      }
+
+      .progress {
+        height: 5px;
+      }
+
+      .template-card {
+        border: 1px solid #dee2e6;
+        border-radius: 5px;
+        padding: 15px;
+        margin-bottom: 15px;
+        background-color: white;
+        cursor: pointer;
+        transition: transform 0.2s, box-shadow 0.2s;
+      }
+
+      .template-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+      }
+
+      .template-card .template-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 10px;
+      }
+
+      .template-card .template-name {
+        font-weight: 600;
+        color: var(--primary-color);
+      }
+
+      .template-card .template-tech {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 5px;
+        margin-top: 10px;
+      }
+
+      .template-card .tech-badge {
+        background-color: #e9ecef;
+        color: var(--secondary-color);
+        padding: 2px 8px;
+        border-radius: 12px;
+        font-size: 0.75rem;
+      }
+
+      .loading-spinner {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 200px;
+      }
+
+      .toast-container {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        z-index: 1050;
+      }
+
+      .custom-toast {
+        background-color: white;
+        border-radius: 5px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        padding: 15px;
+        margin-bottom: 10px;
+        max-width: 350px;
+        display: flex;
+        align-items: center;
+      }
+
+      .custom-toast .toast-icon {
+        font-size: 1.5rem;
+        margin-right: 15px;
+      }
+
+      .custom-toast.success .toast-icon {
+        color: var(--success-color);
+      }
+
+      .custom-toast.error .toast-icon {
+        color: var(--danger-color);
+      }
+
+      .custom-toast.info .toast-icon {
+        color: var(--info-color);
+      }
+
+      .custom-toast.warning .toast-icon {
+        color: var(--warning-color);
+      }
+
+      .custom-toast .toast-content {
+        flex: 1;
+      }
+
+      .custom-toast .toast-title {
+        font-weight: 600;
+        margin-bottom: 5px;
+      }
+
+      .custom-toast .toast-message {
+        font-size: 0.9rem;
+        color: var(--secondary-color);
+      }
+
+      .custom-toast .toast-close {
+        background: none;
+        border: none;
+        font-size: 1.2rem;
+        color: var(--secondary-color);
+        cursor: pointer;
+        margin-left: 10px;
+      }
+
+      .feature-card {
+        border: 1px solid #dee2e6;
+        border-radius: 5px;
+        padding: 15px;
+        margin-bottom: 15px;
+        background-color: white;
+      }
+
+      .feature-card .feature-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 10px;
+      }
+
+      .feature-card .feature-name {
+        font-weight: 600;
+        color: var(--primary-color);
+      }
+
+      .feature-card .feature-description {
+        color: var(--secondary-color);
+        margin-bottom: 10px;
+      }
+
+      .feature-card .feature-status {
+        padding: 2px 8px;
+        border-radius: 12px;
+        font-size: 0.75rem;
+        font-weight: 600;
+        text-transform: uppercase;
+      }
+
+      .feature-card .feature-status.pending {
+        background-color: var(--warning-color);
+        color: var(--dark-color);
+      }
+
+      .feature-card .feature-status.completed {
+        background-color: var(--success-color);
+        color: white;
+      }
+
+      .feature-card .feature-status.failed {
+        background-color: var(--danger-color);
+        color: white;
+      }
+
+      .screenshot-container {
+        border: 1px solid #dee2e6;
+        border-radius: 5px;
+        padding: 10px;
+        background-color: white;
+        text-align: center;
+      }
+
+      .screenshot-container img {
+        max-width: 100%;
+        max-height: 400px;
+        border-radius: 5px;
+      }
+
+      .validation-result {
+        border-radius: 5px;
+        padding: 15px;
+        margin-bottom: 15px;
+      }
+
+      .validation-result.success {
+        background-color: #d4edda;
+        border: 1px solid #c3e6cb;
+        color: #155724;
+      }
+
+      .validation-result.failed {
+        background-color: #f8d7da;
+        border: 1px solid #f5c6cb;
+        color: #721c24;
+      }
+
+      .validation-result .validation-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 10px;
+      }
+
+      .validation-result .validation-title {
+        font-weight: 600;
+      }
+
+      .validation-result .validation-icon {
+        font-size: 1.5rem;
+      }
+
+      .validation-result.success .validation-icon {
+        color: var(--success-color);
+      }
+
+      .validation-result.failed .validation-icon {
+        color: var(--danger-color);
+      }
+
+      .question-card {
+        border: 1px solid #dee2e6;
+        border-radius: 8px;
+        padding: 15px;
+        margin-bottom: 15px;
+        background-color: #f8f9fa;
+      }
+
+      .question-card.active {
+        border-color: var(--primary-color);
+        background-color: white;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      }
+
+      .question-text {
+        font-weight: 600;
+        margin-bottom: 10px;
+        color: var(--primary-color);
+      }
+
+      .question-hint {
+        font-size: 0.9rem;
+        color: var(--secondary-color);
+        margin-bottom: 10px;
+      }
+
+      .context-badge {
+        display: inline-block;
+        padding: 3px 8px;
+        border-radius: 12px;
+        font-size: 0.75rem;
+        font-weight: 600;
+        margin-right: 5px;
+        margin-bottom: 5px;
+        background-color: #e9ecef;
+        color: var(--secondary-color);
+      }
+    </style>
+  </head>
+  <body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+      <div class="container-fluid">
+        <a class="navbar-brand" href="#">
+          <i class="bi bi-cpu"></i> Dave Mode 2.0
+        </a>
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarNav"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav me-auto">
+            <li class="nav-item">
+              <a class="nav-link active" href="#" data-tab="creation"
+                >Creation</a
+              >
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#" data-tab="analysis">Analysis</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#" data-tab="hybrid">Hybrid</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#" data-tab="learning">Learning</a>
+            </li>
+          </ul>
+          <div class="d-flex">
+            <button
+              class="btn btn-outline-light me-2"
+              type="button"
+              id="settingsBtn"
+            >
+              <i class="bi bi-gear"></i> Settings
+            </button>
+          </div>
+        </div>
+      </div>
+    </nav>
+
+    <div class="container-fluid mt-4">
+      <div class="row">
+        <div class="col-12">
+          <ul class="nav nav-tabs" id="mainTabs" role="tablist">
+            <li class="nav-item" role="presentation">
+              <button
+                class="nav-link active"
+                id="creation-tab"
+                data-bs-toggle="tab"
+                data-bs-target="#creation"
+                type="button"
+                role="tab"
+              >
+                <i class="bi bi-plus-circle"></i> Creation
+              </button>
+            </li>
+            <li class="nav-item" role="presentation">
+              <button
+                class="nav-link"
+                id="analysis-tab"
+                data-bs-toggle="tab"
+                data-bs-target="#analysis"
+                type="button"
+                role="tab"
+              >
+                <i class="bi bi-search"></i> Analysis
+              </button>
+            </li>
+            <li class="nav-item" role="presentation">
+              <button
+                class="nav-link"
+                id="hybrid-tab"
+                data-bs-toggle="tab"
+                data-bs-target="#hybrid"
+                type="button"
+                role="tab"
+              >
+                <i class="bi bi-layers"></i> Hybrid
+              </button>
+            </li>
+            <li class="nav-item" role="presentation">
+              <button
+                class="nav-link"
+                id="learning-tab"
+                data-bs-toggle="tab"
+                data-bs-target="#learning"
+                type="button"
+                role="tab"
+              >
+                <i class="bi bi-graph-up"></i> Learning
+              </button>
+            </li>
+          </ul>
+          <div class="tab-content" id="mainTabsContent">
+            <!-- Creation Tab -->
+            <div
+              class="tab-pane fade show active"
+              id="creation"
+              role="tabpanel"
+            >
+              <div class="row mt-4">
+                <div class="col-md-4">
+                  <div class="card">
+                    <div class="card-header">
+                      <i class="bi bi-plus-circle"></i> Create New Project
+                    </div>
+                    <div class="card-body">
+                      <form id="creationForm">
+                        <div class="mb-3">
+                          <label for="projectName" class="form-label"
+                            >Project Name</label
+                          >
+                          <input
+                            type="text"
+                            class="form-control"
+                            id="projectName"
+                            required
+                          />
+                        </div>
+                        <div class="mb-3">
+                          <label for="projectDescription" class="form-label"
+                            >Description</label
+                          >
+                          <textarea
+                            class="form-control"
+                            id="projectDescription"
+                            rows="3"
+                          ></textarea>
+                        </div>
+                        <div class="mb-3">
+                          <label for="projectType" class="form-label"
+                            >Project Type</label
+                          >
+                          <select class="form-select" id="projectType" required>
+                            <option value="">Select project type</option>
+                            <option value="web-app">Web Application</option>
+                            <option value="api">API</option>
+                            <option value="mobile-app">
+                              Mobile Application
+                            </option>
+                            <option value="desktop-app">
+                              Desktop Application
+                            </option>
+                          </select>
+                        </div>
+                        <div class="mb-3">
+                          <label for="projectFramework" class="form-label"
+                            >Framework</label
+                          >
+                          <select class="form-select" id="projectFramework">
+                            <option value="">Select framework</option>
+                            <option value="react">React</option>
+                            <option value="vue">Vue</option>
+                            <option value="angular">Angular</option>
+                            <option value="express">Express</option>
+                            <option value="next">Next.js</option>
+                          </select>
+                        </div>
+                        <div class="mb-3">
+                          <label for="projectBackend" class="form-label"
+                            >Backend</label
+                          >
+                          <select class="form-select" id="projectBackend">
+                            <option value="">Select backend</option>
+                            <option value="node">Node.js</option>
+                            <option value="python">Python</option>
+                            <option value="java">Java</option>
+                            <option value="csharp">C#</option>
+                          </select>
+                        </div>
+                        <div class="mb-3">
+                          <label for="projectFeatures" class="form-label"
+                            >Features (one per line)</label
+                          >
+                          <textarea
+                            class="form-control"
+                            id="projectFeatures"
+                            rows="4"
+                          ></textarea>
+                        </div>
+                        <div class="d-grid">
+                          <button type="submit" class="btn btn-primary">
+                            <i class="bi bi-play-circle"></i> Create Project
+                          </button>
+                        </div>
+                      </form>
+                    </div>
+                  </div>
+
+                  <div class="card mt-4">
+                    <div class="card-header">
+                      <i class="bi bi-grid"></i> Project Templates
+                    </div>
+                    <div class="card-body">
+                      <div id="templatesList">
+                        <div class="loading-spinner">
+                          <div
+                            class="spinner-border text-primary"
+                            role="status"
+                          >
+                            <span class="visually-hidden">Loading...</span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="col-md-8">
+                  <div class="card">
+                    <div class="card-header">
+                      <i class="bi bi-code-slash"></i> Generated Project
+                    </div>
+                    <div class="card-body">
+                      <div id="creationResult">
+                        <div class="text-center py-5">
+                          <i
+                            class="bi bi-lightbulb"
+                            style="font-size: 3rem; color: #ccc"
+                          ></i>
+                          <p class="mt-3">
+                            Create a new project to see the generated code here
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Analysis Tab -->
+            <div class="tab-pane fade" id="analysis" role="tabpanel">
+              <div class="row mt-4">
+                <div class="col-md-4">
+                  <div class="card">
+                    <div class="card-header">
+                      <i class="bi bi-upload"></i> Upload Code for Analysis
+                    </div>
+                    <div class="card-body">
+                      <form id="analysisForm">
+                        <div class="mb-3">
+                          <label for="projectContext" class="form-label"
+                            >Project Context</label
+                          >
+                          <textarea
+                            class="form-control"
+                            id="projectContext"
+                            rows="3"
+                            placeholder="Describe the project, technologies used, and any specific concerns..."
+                          ></textarea>
+                        </div>
+                        <div class="mb-3">
+                          <label for="codeFiles" class="form-label"
+                            >Code Files</label
+                          >
+                          <input
+                            type="file"
+                            class="form-control"
+                            id="codeFiles"
+                            multiple
+                            required
+                          />
+                          <div class="form-text">
+                            Select multiple files to analyze
+                          </div>
+                        </div>
+                        <div class="d-grid">
+                          <button type="submit" class="btn btn-primary">
+                            <i class="bi bi-search"></i> Analyze Code
+                          </button>
+                        </div>
+                      </form>
+                    </div>
+                  </div>
+
+                  <div class="card mt-4">
+                    <div class="card-header">
+                      <i class="bi bi-bar-chart"></i> Analysis Summary
+                    </div>
+                    <div class="card-body">
+                      <div id="analysisSummary">
+                        <div class="text-center py-5">
+                          <i
+                            class="bi bi-clipboard-data"
+                            style="font-size: 3rem; color: #ccc"
+                          ></i>
+                          <p class="mt-3">
+                            Upload code to see analysis summary
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="col-md-8">
+                  <div class="card">
+                    <div class="card-header">
+                      <i class="bi bi-bug"></i> Issues Found
+                    </div>
+                    <div class="card-body">
+                      <div id="issuesList">
+                        <div class="text-center py-5">
+                          <i
+                            class="bi bi-shield-x"
+                            style="font-size: 3rem; color: #ccc"
+                          ></i>
+                          <p class="mt-3">No issues found yet</p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="card mt-4">
+                    <div class="card-header">
+                      <i class="bi bi-lightbulb"></i> Recommendations
+                    </div>
+                    <div class="card-body">
+                      <div id="recommendationsList">
+                        <div class="text-center py-5">
+                          <i
+                            class="bi bi-lightbulb"
+                            style="font-size: 3rem; color: #ccc"
+                          ></i>
+                          <p class="mt-3">No recommendations available yet</p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Hybrid Tab -->
+            <div class="tab-pane fade" id="hybrid" role="tabpanel">
+              <div class="row mt-4">
+                <div class="col-md-4">
+                  <div class="card">
+                    <div class="card-header">
+                      <i class="bi bi-layers"></i> Extend Existing Project
+                    </div>
+                    <div class="card-body">
+                      <form id="hybridForm">
+                        <div class="mb-3">
+                          <label for="existingProjectContext" class="form-label"
+                            >Project Context</label
+                          >
+                          <textarea
+                            class="form-control"
+                            id="existingProjectContext"
+                            rows="3"
+                            placeholder="Describe the existing project, technologies used, and architecture..."
+                          ></textarea>
+                        </div>
+                        <div class="mb-3">
+                          <label for="existingFiles" class="form-label"
+                            >Existing Files</label
+                          >
+                          <input
+                            type="file"
+                            class="form-control"
+                            id="existingFiles"
+                            multiple
+                            required
+                          />
+                          <div class="form-text">
+                            Select files from the existing project
+                          </div>
+                        </div>
+                        <div class="mb-3">
+                          <label for="newFeatures" class="form-label"
+                            >New Features (one per line)</label
+                          >
+                          <textarea
+                            class="form-control"
+                            id="newFeatures"
+                            rows="4"
+                            placeholder="Describe the new features to add..."
+                          ></textarea>
+                        </div>
+                        <div class="d-grid">
+                          <button type="submit" class="btn btn-primary">
+                            <i class="bi bi-plus-circle"></i> Extend Project
+                          </button>
+                        </div>
+                      </form>
+                    </div>
+                  </div>
+
+                  <div class="card mt-4">
+                    <div class="card-header">
+                      <i class="bi bi-info-circle"></i> Integration Plan
+                    </div>
+                    <div class="card-body">
+                      <div id="integrationPlan">
+                        <div class="text-center py-5">
+                          <i
+                            class="bi bi-diagram-3"
+                            style="font-size: 3rem; color: #ccc"
+                          ></i>
+                          <p class="mt-3">
+                            Extend a project to see integration plan
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="col-md-8">
+                  <div class="card">
+                    <div class="card-header">
+                      <i class="bi bi-file-code"></i> Modified Files
+                    </div>
+                    <div class="card-body">
+                      <div id="modifiedFilesList">
+                        <div class="text-center py-5">
+                          <i
+                            class="bi bi-file-earmark-code"
+                            style="font-size: 3rem; color: #ccc"
+                          ></i>
+                          <p class="mt-3">No files modified yet</p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="card mt-4">
+                    <div class="card-header">
+                      <i class="bi bi-plus-square"></i> New Files
+                    </div>
+                    <div class="card-body">
+                      <div id="newFilesList">
+                        <div class="text-center py-5">
+                          <i
+                            class="bi bi-file-plus"
+                            style="font-size: 3rem; color: #ccc"
+                          ></i>
+                          <p class="mt-3">No new files created yet</p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Learning Tab -->
+            <div class="tab-pane fade" id="learning" role="tabpanel">
+              <div class="row mt-4">
+                <div class="col-md-6">
+                  <div class="card">
+                    <div class="card-header">
+                      <i class="bi bi-people"></i> Agent Performance
+                    </div>
+                    <div class="card-body">
+                      <div id="agentPerformance">
+                        <div class="loading-spinner">
+                          <div
+                            class="spinner-border text-primary"
+                            role="status"
+                          >
+                            <span class="visually-hidden">Loading...</span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="col-md-6">
+                  <div class="card">
+                    <div class="card-header">
+                      <i class="bi bi-graph-up"></i> Learning Patterns
+                    </div>
+                    <div class="card-body">
+                      <div id="learningPatterns">
+                        <div class="loading-spinner">
+                          <div
+                            class="spinner-border text-primary"
+                            role="status"
+                          >
+                            <span class="visually-hidden">Loading...</span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="row mt-4">
+                <div class="col-12">
+                  <div class="card">
+                    <div class="card-header">
+                      <i class="bi bi-clock-history"></i> Recent Interactions
+                    </div>
+                    <div class="card-body">
+                      <div id="recentInteractions">
+                        <div class="loading-spinner">
+                          <div
+                            class="spinner-border text-primary"
+                            role="status"
+                          >
+                            <span class="visually-hidden">Loading...</span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Toast Container -->
+    <div class="toast-container" id="toastContainer"></div>
+
+    <!-- Settings Modal -->
+    <div class="modal fade" id="settingsModal" tabindex="-1">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Settings</h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <form id="settingsForm">
+              <div class="mb-3">
+                <label for="apiEndpoint" class="form-label">API Endpoint</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="apiEndpoint"
+                  value="http://localhost:3000"
+                />
+              </div>
+              <div class="mb-3">
+                <label for="apiKey" class="form-label">API Key</label>
+                <input type="password" class="form-control" id="apiKey" />
+              </div>
+              <div class="mb-3">
+                <label for="theme" class="form-label">Theme</label>
+                <select class="form-select" id="theme">
+                  <option value="light">Light</option>
+                  <option value="dark">Dark</option>
+                </select>
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-bs-dismiss="modal"
+            >
+              Cancel
+            </button>
+            <button type="button" class="btn btn-primary" id="saveSettings">
+              Save Changes
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Clarification Modal -->
+    <div class="modal fade" id="clarificationModal" tabindex="-1">
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">
+              <i class="bi bi-question-circle"></i>
+              <span id="clarificationTitle">Clarification Needed</span>
+            </h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <div id="clarificationIntro">
+              <p>
+                We need some additional information to better understand your
+                requirements:
+              </p>
+            </div>
+            <div id="clarificationProgress" class="mb-3" style="display: none">
+              <div class="progress">
+                <div
+                  class="progress-bar"
+                  role="progressbar"
+                  style="width: 0%"
+                ></div>
+              </div>
+              <div class="text-center mt-1">
+                <small
+                  >Question <span id="currentQuestion">1</span> of
+                  <span id="totalQuestions">1</span></small
+                >
+              </div>
+            </div>
+            <div id="clarificationQuestions"></div>
+            <div id="clarificationContext" class="mt-3" style="display: none">
+              <div class="alert alert-info">
+                <h6><i class="bi bi-info-circle"></i> Context</h6>
+                <p id="clarificationContextText"></p>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-bs-dismiss="modal"
+            >
+              Cancel
+            </button>
+            <button
+              type="button"
+              class="btn btn-primary"
+              id="submitClarification"
+            >
+              <i class="bi bi-check-circle"></i> Submit
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Sandbox Modal -->
+    <div class="modal fade" id="sandboxModal" tabindex="-1">
+      <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">
+              <i class="bi bi-terminal"></i> Code Sandbox
+            </h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <div id="sandbox-loading" style="display: none">
+              <div class="d-flex justify-content-center">
+                <div class="spinner-border text-primary" role="status">
+                  <span class="visually-hidden">Loading...</span>
+                </div>
+              </div>
+              <div class="text-center mt-2">Initializing sandbox...</div>
+            </div>
+
+            <div id="sandbox-content" style="display: none">
+              <ul class="nav nav-tabs" id="sandboxTabs" role="tablist">
+                <li class="nav-item" role="presentation">
+                  <button
+                    class="nav-link active"
+                    id="sandbox-editor-tab"
+                    data-bs-toggle="tab"
+                    data-bs-target="#sandbox-editor"
+                    type="button"
+                    role="tab"
+                  >
+                    <i class="bi bi-file-code"></i> Editor
+                  </button>
+                </li>
+                <li class="nav-item" role="presentation">
+                  <button
+                    class="nav-link"
+                    id="sandbox-terminal-tab"
+                    data-bs-toggle="tab"
+                    data-bs-target="#sandbox-terminal"
+                    type="button"
+                    role="tab"
+                  >
+                    <i class="bi bi-terminal"></i> Terminal
+                  </button>
+                </li>
+                <li class="nav-item" role="presentation">
+                  <button
+                    class="nav-link"
+                    id="sandbox-preview-tab"
+                    data-bs-toggle="tab"
+                    data-bs-target="#sandbox-preview"
+                    type="button"
+                    role="tab"
+                  >
+                    <i class="bi bi-eye"></i> Preview
+                  </button>
+                </li>
+              </ul>
+
+              <div class="tab-content mt-3" id="sandboxTabsContent">
+                <div
+                  class="tab-pane fade show active"
+                  id="sandbox-editor"
+                  role="tabpanel"
+                >
+                  <div class="mb-3">
+                    <select class="form-select" id="sandbox-file-select">
+                      <option value="">Select a file...</option>
+                    </select>
+                  </div>
+                  <div class="mb-3">
+                    <textarea
+                      class="form-control"
+                      id="sandbox-editor-content"
+                      rows="15"
+                      placeholder="File content will appear here..."
+                    ></textarea>
+                  </div>
+                  <div class="d-flex justify-content-between">
+                    <div>
+                      <button
+                        class="btn btn-sm btn-outline-primary"
+                        id="sandbox-save-file"
+                      >
+                        <i class="bi bi-save"></i> Save
+                      </button>
+                      <button
+                        class="btn btn-sm btn-outline-secondary"
+                        id="sandbox-new-file"
+                      >
+                        <i class="bi bi-plus"></i> New File
+                      </button>
+                    </div>
+                    <div>
+                      <button
+                        class="btn btn-sm btn-success"
+                        id="sandbox-run-project"
+                      >
+                        <i class="bi bi-play-circle"></i> Run Project
+                      </button>
+                    </div>
+                  </div>
+                </div>
+
+                <div
+                  class="tab-pane fade"
+                  id="sandbox-terminal"
+                  role="tabpanel"
+                >
+                  <div class="mb-3">
+                    <div class="input-group">
+                      <input
+                        type="text"
+                        class="form-control"
+                        id="sandbox-command"
+                        placeholder="Enter command..."
+                      />
+                      <button
+                        class="btn btn-primary"
+                        id="sandbox-execute-command"
+                      >
+                        <i class="bi bi-play"></i> Execute
+                      </button>
+                    </div>
+                  </div>
+                  <div
+                    class="bg-dark text-light p-3 rounded"
+                    style="
+                      font-family: monospace;
+                      height: 300px;
+                      overflow-y: auto;
+                    "
+                    id="sandbox-terminal-output"
+                  >
+                    <div>$ Welcome to the sandbox terminal</div>
+                  </div>
+                </div>
+
+                <div class="tab-pane fade" id="sandbox-preview" role="tabpanel">
+                  <div class="text-center">
+                    <div id="sandbox-preview-container">
+                      <div class="spinner-border text-primary" role="status">
+                        <span class="visually-hidden">Loading preview...</span>
+                      </div>
+                      <div class="mt-2">Loading preview...</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-bs-dismiss="modal"
+            >
+              Close
+            </button>
+            <button
+              type="button"
+              class="btn btn-primary"
+              id="sandbox-download-project"
+            >
+              <i class="bi bi-download"></i> Download Project
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="/js/sandbox-browser.js"></script>
+    <script>
+      // Global variables
+      let currentTab = "creation";
+      let apiEndpoint = "http://localhost:3000";
+
+      // Initialize the app
+      document.addEventListener("DOMContentLoaded", function () {
+        // Load settings from localStorage
+        loadSettings();
+
+        // Set up event listeners
+        setupEventListeners();
+
+        // Load initial data
+        loadTemplates();
+        loadLearningData();
+      });
+
+      // Load settings from localStorage
+      function loadSettings() {
+        const savedEndpoint = localStorage.getItem("apiEndpoint");
+        if (savedEndpoint) {
+          apiEndpoint = savedEndpoint;
+          document.getElementById("apiEndpoint").value = savedEndpoint;
+        }
+
+        const savedApiKey = localStorage.getItem("apiKey");
+        if (savedApiKey) {
+          document.getElementById("apiKey").value = savedApiKey;
+        }
+
+        const savedTheme = localStorage.getItem("theme");
+        if (savedTheme) {
+          document.getElementById("theme").value = savedTheme;
+          document.body.setAttribute("data-theme", savedTheme);
+        }
+      }
+
+      // Set up event listeners
+      function setupEventListeners() {
+        // Tab navigation
+        document.querySelectorAll("[data-tab]").forEach((tab) => {
+          tab.addEventListener("click", function (e) {
+            e.preventDefault();
+            const tabName = this.getAttribute("data-tab");
+            switchTab(tabName);
+          });
+        });
+
+        // Settings button
+        document
+          .getElementById("settingsBtn")
+          .addEventListener("click", function () {
+            const settingsModal = new bootstrap.Modal(
+              document.getElementById("settingsModal")
+            );
+            settingsModal.show();
+          });
+
+        // Save settings button
+        document
+          .getElementById("saveSettings")
+          .addEventListener("click", function () {
+            saveSettings();
+            const settingsModal = bootstrap.Modal.getInstance(
+              document.getElementById("settingsModal")
+            );
+            settingsModal.hide();
+            showToast("Settings saved successfully", "success");
+          });
+
+        // Creation form
+        document
+          .getElementById("creationForm")
+          .addEventListener("submit", function (e) {
+            e.preventDefault();
+            createProject();
+          });
+
+        // Analysis form
+        document
+          .getElementById("analysisForm")
+          .addEventListener("submit", function (e) {
+            e.preventDefault();
+            analyzeCode();
+          });
+
+        // Hybrid form
+        document
+          .getElementById("hybridForm")
+          .addEventListener("submit", function (e) {
+            e.preventDefault();
+            extendProject();
+          });
+
+        // Sandbox-related event listeners
+        document
+          .getElementById("sandbox-file-select")
+          .addEventListener("change", async function () {
+            const filePath = this.value;
+            if (filePath && sandboxBrowser) {
+              try {
+                const content = await sandboxBrowser.readFile(
+                  `/project/sandbox/${filePath}`
+                );
+                document.getElementById("sandbox-editor-content").value =
+                  content;
+              } catch (error) {
+                console.error("Error reading file:", error);
+                showToast("Error reading file", "error");
+              }
+            }
+          });
+
+        document
+          .getElementById("sandbox-save-file")
+          .addEventListener("click", async function () {
+            const filePath = document.getElementById(
+              "sandbox-file-select"
+            ).value;
+            const content = document.getElementById(
+              "sandbox-editor-content"
+            ).value;
+
+            if (!filePath) {
+              showToast("Please select a file", "warning");
+              return;
+            }
+
+            if (sandboxBrowser) {
+              try {
+                await sandboxBrowser.writeFile(
+                  `/project/sandbox/${filePath}`,
+                  content
+                );
+                showToast("File saved", "success");
+              } catch (error) {
+                console.error("Error saving file:", error);
+                showToast("Error saving file", "error");
+              }
+            }
+          });
+
+        document
+          .getElementById("sandbox-new-file")
+          .addEventListener("click", function () {
+            const fileName = prompt("Enter file name:");
+            if (fileName) {
+              // Add to file list
+              const option = document.createElement("option");
+              option.value = fileName;
+              option.textContent = fileName;
+              document
+                .getElementById("sandbox-file-select")
+                .appendChild(option);
+
+              // Select the new file
+              document.getElementById("sandbox-file-select").value = fileName;
+              document.getElementById("sandbox-editor-content").value = "";
+
+              // Focus on editor
+              document.getElementById("sandbox-editor-content").focus();
+            }
+          });
+
+        document
+          .getElementById("sandbox-execute-command")
+          .addEventListener("click", async function () {
+            const command = document.getElementById("sandbox-command").value;
+            if (!command) {
+              showToast("Please enter a command", "warning");
+              return;
+            }
+
+            try {
+              showToast("Executing command...", "info");
+
+              const response = await fetch(
+                `${apiEndpoint}/api/sandbox/${currentSandboxId}/execute`,
+                {
+                  method: "POST",
+                  headers: {
+                    "Content-Type": "application/json",
+                  },
+                  body: JSON.stringify({ command }),
+                }
+              );
+
+              const result = await response.json();
+
+              if (response.ok) {
+                // Add command and output to terminal
+                const terminalOutput = document.getElementById(
+                  "sandbox-terminal-output"
+                );
+                terminalOutput.innerHTML += `<div>$ ${command}</div>`;
+                terminalOutput.innerHTML += `<div>${result.stdout}</div>`;
+
+                if (result.stderr) {
+                  terminalOutput.innerHTML += `<div class="text-danger">${result.stderr}</div>`;
+                }
+
+                // Scroll to bottom
+                terminalOutput.scrollTop = terminalOutput.scrollHeight;
+
+                // Clear command input
+                document.getElementById("sandbox-command").value = "";
+
+                showToast("Command executed", "success");
+              } else {
+                showToast(`Error: ${result.error}`, "error");
+              }
+            } catch (error) {
+              console.error("Error executing command:", error);
+              showToast("Error executing command", "error");
+            }
+          });
+
+        document
+          .getElementById("sandbox-run-project")
+          .addEventListener("click", async function () {
+            try {
+              showToast("Starting project...", "info");
+
+              // Execute npm start in the background
+              await fetch(
+                `${apiEndpoint}/api/sandbox/${currentSandboxId}/execute`,
+                {
+                  method: "POST",
+                  headers: {
+                    "Content-Type": "application/json",
+                  },
+                  body: JSON.stringify({
+                    command: "cd /project/sandbox && npm start &",
+                  }),
+                }
+              );
+
+              // Switch to preview tab
+              const previewTab = new bootstrap.Tab(
+                document.getElementById("sandbox-preview-tab")
+              );
+              previewTab.show();
+
+              // Show loading in preview
+              document.getElementById("sandbox-preview-container").innerHTML = `
+            <div class="spinner-border text-primary" role="status">
+              <span class="visually-hidden">Loading preview...</span>
+            </div>
+            <div class="mt-2">Starting project...</div>
+          `;
+
+              // Wait a bit and then try to show a preview
+              setTimeout(async () => {
+                try {
+                  // Check if the project is running
+                  const response = await fetch(
+                    `${apiEndpoint}/api/sandbox/${currentSandboxId}/execute`,
+                    {
+                      method: "POST",
+                      headers: {
+                        "Content-Type": "application/json",
+                      },
+                      body: JSON.stringify({ command: "ps aux | grep node" }),
+                    }
+                  );
+
+                  const result = await response.json();
+
+                  if (response.ok && result.stdout.includes("npm start")) {
+                    // Project is running, show a placeholder preview
+                    document.getElementById(
+                      "sandbox-preview-container"
+                    ).innerHTML = `
+                  <div class="alert alert-info">
+                    <h5>Project Running</h5>
+                    <p>Your project is now running in the sandbox. The preview will be available in a future update.</p>
+                    <p>Terminal output:</p>
+                    <pre>${result.stdout}</pre>
+                  </div>
+                `;
+                  } else {
+                    // Project failed to start
+                    document.getElementById(
+                      "sandbox-preview-container"
+                    ).innerHTML = `
+                  <div class="alert alert-danger">
+                    <h5>Project Failed to Start</h5>
+                    <p>There was an error starting your project. Check the terminal for more information.</p>
+                  </div>
+                `;
+                  }
+                } catch (error) {
+                  console.error("Error checking project status:", error);
+                  document.getElementById(
+                    "sandbox-preview-container"
+                  ).innerHTML = `
+                <div class="alert alert-danger">
+                  <h5>Error</h5>
+                  <p>There was an error checking the project status.</p>
+                </div>
+              `;
+                }
+              }, 5000);
+
+              showToast("Project started", "success");
+            } catch (error) {
+              console.error("Error starting project:", error);
+              showToast("Error starting project", "error");
+            }
+          });
+
+        document
+          .getElementById("sandbox-download-project")
+          .addEventListener("click", async function () {
+            try {
+              showToast("Preparing download...", "info");
+
+              // Get all files in the sandbox
+              const response = await fetch(
+                `${apiEndpoint}/api/sandbox/${currentSandboxId}/execute`,
+                {
+                  method: "POST",
+                  headers: {
+                    "Content-Type": "application/json",
+                  },
+                  body: JSON.stringify({
+                    command:
+                      'find /project/sandbox -type f -name "*.js" -o -name "*.jsx" -o -name "*.ts" -o -name "*.tsx" -o -name "*.json" -o -name "*.css" -o -name "*.html" | sort',
+                  }),
+                }
+              );
+
+              const result = await response.json();
+
+              if (response.ok) {
+                const files = result.stdout.trim().split("\n");
+
+                // Download each file
+                for (const filePath of files) {
+                  if (filePath) {
+                    const fileName = filePath.replace("/project/sandbox/", "");
+
+                    // Get file content
+                    const fileResponse = await fetch(
+                      `${apiEndpoint}/api/sandbox/${currentSandboxId}/execute`,
+                      {
+                        method: "POST",
+                        headers: {
+                          "Content-Type": "application/json",
+                        },
+                        body: JSON.stringify({ command: `cat ${filePath}` }),
+                      }
+                    );
+
+                    const fileResult = await fileResponse.json();
+
+                    if (fileResponse.ok) {
+                      // Download the file
+                      const element = document.createElement("a");
+                      element.setAttribute(
+                        "href",
+                        "data:text/plain;charset=utf-8," +
+                          encodeURIComponent(fileResult.stdout)
+                      );
+                      element.setAttribute("download", fileName);
+                      element.style.display = "none";
+                      document.body.appendChild(element);
+                      element.click();
+                      document.body.removeChild(element);
+                    }
+                  }
+                }
+
+                showToast("Project downloaded", "success");
+              } else {
+                showToast(`Error: ${result.error}`, "error");
+              }
+            } catch (error) {
+              console.error("Error downloading project:", error);
+              showToast("Error downloading project", "error");
+            }
+          });
+
+        // Handle modal close
+        document
+          .getElementById("sandboxModal")
+          .addEventListener("hidden.bs.modal", function () {
+            // Disconnect from sandbox
+            if (sandboxBrowser) {
+              sandboxBrowser.disconnect();
+              sandboxBrowser = null;
+            }
+
+            // Reset UI
+            document.getElementById("sandbox-loading").style.display = "block";
+            document.getElementById("sandbox-content").style.display = "none";
+            document.getElementById("sandbox-file-select").innerHTML =
+              '<option value="">Select a file...</option>';
+            document.getElementById("sandbox-editor-content").value = "";
+            document.getElementById("sandbox-terminal-output").innerHTML =
+              "<div>$ Welcome to the sandbox terminal</div>";
+            document.getElementById("sandbox-preview-container").innerHTML = `
+          <div class="spinner-border text-primary" role="status">
+            <span class="visually-hidden">Loading preview...</span>
+          </div>
+          <div class="mt-2">Loading preview...</div>
+        `;
+          });
+      }
+
+      // Switch tab
+      function switchTab(tabName) {
+        currentTab = tabName;
+
+        // Update tab buttons
+        document.querySelectorAll(".nav-link").forEach((tab) => {
+          tab.classList.remove("active");
+        });
+        document
+          .querySelector(`[data-tab="${tabName}"]`)
+          .classList.add("active");
+
+        // Update tab content
+        document.querySelectorAll(".tab-pane").forEach((pane) => {
+          pane.classList.remove("show", "active");
+        });
+        document.getElementById(tabName).classList.add("show", "active");
+      }
+
+      // Save settings
+      function saveSettings() {
+        const endpoint = document.getElementById("apiEndpoint").value;
+        const apiKey = document.getElementById("apiKey").value;
+        const theme = document.getElementById("theme").value;
+
+        localStorage.setItem("apiEndpoint", endpoint);
+        localStorage.setItem("apiKey", apiKey);
+        localStorage.setItem("theme", theme);
+
+        apiEndpoint = endpoint;
+        document.body.setAttribute("data-theme", theme);
+      }
+
+      // Show toast notification
+      function showToast(message, type = "info") {
+        const toastContainer = document.getElementById("toastContainer");
+        const toastId = "toast-" + Date.now();
+
+        let iconClass = "bi-info-circle";
+        if (type === "success") iconClass = "bi-check-circle";
+        if (type === "error") iconClass = "bi-exclamation-circle";
+        if (type === "warning") iconClass = "bi-exclamation-triangle";
+
+        const toastHtml = `
+        <div id="${toastId}" class="custom-toast ${type}">
+          <div class="toast-icon">
+            <i class="bi ${iconClass}"></i>
+          </div>
+          <div class="toast-content">
+            <div class="toast-title">${
+              type.charAt(0).toUpperCase() + type.slice(1)
+            }</div>
+            <div class="toast-message">${message}</div>
+          </div>
+          <button class="toast-close" onclick="document.getElementById('${toastId}').remove()">
+            <i class="bi bi-x"></i>
+          </button>
+        </div>
+      `;
+
+        toastContainer.insertAdjacentHTML("beforeend", toastHtml);
+
+        // Auto-remove after 5 seconds
+        setTimeout(() => {
+          const toast = document.getElementById(toastId);
+          if (toast) toast.remove();
+        }, 5000);
+      }
+
+      // Load templates
+      async function loadTemplates() {
+        try {
+          const response = await fetch(`${apiEndpoint}/api/templates`);
+          const templates = await response.json();
+
+          const templatesList = document.getElementById("templatesList");
+          templatesList.innerHTML = "";
+
+          if (templates.length === 0) {
+            templatesList.innerHTML =
+              '<p class="text-center">No templates available</p>';
+            return;
+          }
+
+          templates.forEach((template) => {
+            const templateCard = document.createElement("div");
+            templateCard.className = "template-card";
+            templateCard.innerHTML = `
+            <div class="template-header">
+              <div class="template-name">${template.name}</div>
+              <button class="btn btn-sm btn-outline-primary" onclick="useTemplate('${
+                template.id
+              }')">Use</button>
+            </div>
+            <div class="template-description">${template.description}</div>
+            <div class="template-tech">
+              ${template.technologies
+                .map((tech) => `<span class="tech-badge">${tech}</span>`)
+                .join("")}
+            </div>
+          `;
+            templatesList.appendChild(templateCard);
+          });
+        } catch (error) {
+          console.error("Error loading templates:", error);
+          showToast("Error loading templates", "error");
+        }
+      }
+
+      // Use template
+      function useTemplate(templateId) {
+        // Find the template and populate the form
+        fetch(`${apiEndpoint}/api/templates`)
+          .then((response) => response.json())
+          .then((templates) => {
+            const template = templates.find((t) => t.id === templateId);
+            if (template) {
+              document.getElementById("projectType").value = template.id;
+              showToast(`Template "${template.name}" selected`, "success");
+            }
+          })
+          .catch((error) => {
+            console.error("Error using template:", error);
+            showToast("Error using template", "error");
+          });
+      }
+
+      // Create project
+      async function createProject() {
+        const projectName = document.getElementById("projectName").value;
+        const projectDescription =
+          document.getElementById("projectDescription").value;
+        const projectType = document.getElementById("projectType").value;
+        const projectFramework =
+          document.getElementById("projectFramework").value;
+        const projectBackend = document.getElementById("projectBackend").value;
+        const projectFeatures = document
+          .getElementById("projectFeatures")
+          .value.split("\n")
+          .filter((line) => line.trim() !== "")
+          .map((line) => {
+            const [name, ...descriptionParts] = line.split(":");
+            return {
+              name: name.trim(),
+              description: descriptionParts.join(":").trim() || name.trim(),
+            };
+          });
+
+        const requirements = {
+          name: projectName,
+          description: projectDescription,
+          type: projectType,
+          framework: projectFramework,
+          backend: projectBackend,
+          features: projectFeatures,
+        };
+
+        const context = {
+          timestamp: new Date().toISOString(),
+        };
+
+        try {
+          showToast("Creating project...", "info");
+
+          const response = await fetch(`${apiEndpoint}/api/create`, {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ requirements, context }),
+          });
+
+          const result = await response.json();
+
+          if (response.ok) {
+            if (result.needsClarification) {
+              // Show clarification modal
+              showClarificationModal(
+                result.interactionId,
+                result.questions,
+                result
+              );
+            } else {
+              displayCreationResult(result);
+              showToast("Project created successfully", "success");
+            }
+          } else {
+            showToast(`Error: ${result.error}`, "error");
+          }
+        } catch (error) {
+          console.error("Error creating project:", error);
+          showToast("Error creating project", "error");
+        }
+      }
+
+      // Display creation result
+      function displayCreationResult(result) {
+        const creationResult = document.getElementById("creationResult");
+        creationResult.innerHTML = "";
+
+        // Project validation
+        if (result.validation) {
+          const validationClass = result.validation.success
+            ? "success"
+            : "failed";
+          const validationIcon = result.validation.success
+            ? "bi-check-circle"
+            : "bi-x-circle";
+
+          const validationDiv = document.createElement("div");
+          validationDiv.className = `validation-result ${validationClass}`;
+          validationDiv.innerHTML = `
+          <div class="validation-header">
+            <div class="validation-title">Project Validation</div>
+            <div class="validation-icon">
+              <i class="bi ${validationIcon}"></i>
+            </div>
+          </div>
+          <div>${
+            result.validation.success
+              ? "Project validated successfully"
+              : "Project validation failed"
+          }</div>
+        `;
+          creationResult.appendChild(validationDiv);
+        }
+
+        // Project files
+        if (result.project && result.project.files) {
+          const filesDiv = document.createElement("div");
+          filesDiv.innerHTML = '<h5 class="mt-4">Project Files</h5>';
+
+          const filesList = document.createElement("div");
+          filesList.className = "files-list";
+
+          result.project.files.forEach((file) => {
+            const fileItem = document.createElement("div");
+            fileItem.className = "file-item";
+            fileItem.innerHTML = `
+            <div class="file-header">
+              <div class="file-name">${file.path}</div>
+              <div class="file-actions">
+                <button class="btn btn-sm btn-outline-primary" onclick="downloadFile('${
+                  file.path
+                }', \`${escapeHtml(file.content)}\`)">
+                  <i class="bi bi-download"></i>
+                </button>
+                <button class="btn btn-sm btn-outline-secondary" onclick="viewFile('${
+                  file.path
+                }', \`${escapeHtml(file.content)}\`)">
+                  <i class="bi bi-eye"></i>
+                </button>
+              </div>
+            </div>
+            <div class="file-content code-block">${escapeHtml(
+              file.content
+            )}</div>
+          `;
+            filesList.appendChild(fileItem);
+          });
+
+          filesDiv.appendChild(filesList);
+          creationResult.appendChild(filesDiv);
+        }
+
+        // Download all button
+        if (result.project && result.project.files) {
+          const downloadAllDiv = document.createElement("div");
+          downloadAllDiv.className = "mt-3 text-center";
+          downloadAllDiv.innerHTML = `
+          <button class="btn btn-primary me-2" onclick="downloadAllFiles(${JSON.stringify(
+            result.project.files
+          ).replace(/"/g, "&quot;")})">
+            <i class="bi bi-download"></i> Download All Files
+          </button>
+          <button class="btn btn-outline-primary" onclick="openSandboxModal(${JSON.stringify(
+            result.project
+          ).replace(/"/g, "&quot;")})">
+            <i class="bi bi-terminal"></i> Open in Sandbox
+          </button>
+        `;
+          creationResult.appendChild(downloadAllDiv);
+        }
+      }
+
+      // Analyze code
+      async function analyzeCode() {
+        const projectContext = document.getElementById("projectContext").value;
+        const codeFiles = document.getElementById("codeFiles").files;
+
+        if (codeFiles.length === 0) {
+          showToast("Please select at least one file to analyze", "warning");
+          return;
+        }
+
+        const formData = new FormData();
+        formData.append("projectContext", projectContext);
+
+        for (let i = 0; i < codeFiles.length; i++) {
+          formData.append("files", codeFiles[i]);
+        }
+
+        try {
+          showToast("Analyzing code...", "info");
+
+          const response = await fetch(`${apiEndpoint}/api/analyze`, {
+            method: "POST",
+            body: formData,
+          });
+
+          const result = await response.json();
+
+          if (response.ok) {
+            if (result.needsClarification) {
+              // Show clarification modal
+              showClarificationModal(
+                result.interactionId,
+                result.questions,
+                result
+              );
+            } else {
+              displayAnalysisResult(result);
+              showToast("Code analysis completed", "success");
+            }
+          } else {
+            showToast(`Error: ${result.error}`, "error");
+          }
+        } catch (error) {
+          console.error("Error analyzing code:", error);
+          showToast("Error analyzing code", "error");
+        }
+      }
+
+      // Display analysis result
+      function displayAnalysisResult(result) {
+        // Display summary
+        const summary = result.summary;
+        const analysisSummary = document.getElementById("analysisSummary");
+        analysisSummary.innerHTML = `
+        <div class="row">
+          <div class="col-6">
+            <div class="text-center">
+              <div class="agent-stat-value">${summary.totalFiles}</div>
+              <div class="agent-stat-label">Files</div>
+            </div>
+          </div>
+          <div class="col-6">
+            <div class="text-center">
+              <div class="agent-stat-value">${summary.totalIssues}</div>
+              <div class="agent-stat-label">Issues</div>
+            </div>
+          </div>
+        </div>
+        <hr>
+        <div class="mb-2">
+          <div class="d-flex justify-content-between">
+            <span>Critical:</span>
+            <span class="badge bg-danger">${summary.criticalIssues}</span>
+          </div>
+          <div class="progress mt-1">
+            <div class="progress-bar bg-danger" style="width: ${
+              (summary.criticalIssues / summary.totalIssues) * 100 || 0
+            }%"></div>
+          </div>
+        </div>
+        <div class="mb-2">
+          <div class="d-flex justify-content-between">
+            <span>High:</span>
+            <span class="badge bg-warning text-dark">${
+              summary.highIssues
+            }</span>
+          </div>
+          <div class="progress mt-1">
+            <div class="progress-bar bg-warning" style="width: ${
+              (summary.highIssues / summary.totalIssues) * 100 || 0
+            }%"></div>
+          </div>
+        </div>
+        <div class="mb-2">
+          <div class="d-flex justify-content-between">
+            <span>Medium:</span>
+            <span class="badge bg-info">${summary.mediumIssues}</span>
+          </div>
+          <div class="progress mt-1">
+            <div class="progress-bar bg-info" style="width: ${
+              (summary.mediumIssues / summary.totalIssues) * 100 || 0
+            }%"></div>
+          </div>
+        </div>
+        <div class="mb-2">
+          <div class="d-flex justify-content-between">
+            <span>Low:</span>
+            <span class="badge bg-secondary">${summary.lowIssues}</span>
+          </div>
+          <div class="progress mt-1">
+            <div class="progress-bar bg-secondary" style="width: ${
+              (summary.lowIssues / summary.totalIssues) * 100 || 0
+            }%"></div>
+          </div>
+        </div>
+      `;
+
+        // Display issues
+        const issues = result.issues;
+        const issuesList = document.getElementById("issuesList");
+        issuesList.innerHTML = "";
+
+        if (issues.length === 0) {
+          issuesList.innerHTML = `
+          <div class="text-center py-5">
+            <i class="bi bi-shield-check" style="font-size: 3rem; color: var(--success-color);"></i>
+            <p class="mt-3">No issues found!</p>
+          </div>
+        `;
+        } else {
+          issues.forEach((issue) => {
+            const issueItem = document.createElement("div");
+            issueItem.className = `issue-item ${issue.severity}`;
+            issueItem.innerHTML = `
+            <div class="issue-header">
+              <div class="issue-file">${issue.file}:${issue.line}</div>
+              <div class="issue-severity ${issue.severity}">${issue.severity}</div>
+            </div>
+            <div class="issue-message">${issue.message}</div>
+          `;
+            issuesList.appendChild(issueItem);
+          });
+        }
+
+        // Display recommendations
+        const recommendations = result.recommendations;
+        const recommendationsList = document.getElementById(
+          "recommendationsList"
+        );
+        recommendationsList.innerHTML = "";
+
+        if (recommendations.length === 0) {
+          recommendationsList.innerHTML = `
+          <div class="text-center py-5">
+            <i class="bi bi-lightbulb" style="font-size: 3rem; color: #ccc;"></i>
+            <p class="mt-3">No recommendations available</p>
+          </div>
+        `;
+        } else {
+          recommendations.forEach((recommendation) => {
+            const recommendationItem = document.createElement("div");
+            recommendationItem.className = "feature-card";
+            recommendationItem.innerHTML = `
+            <div class="feature-header">
+              <div class="feature-name">${recommendation.type}</div>
+              <div class="feature-status ${recommendation.priority}">${recommendation.priority}</div>
+            </div>
+            <div class="feature-description">${recommendation.description}</div>
+            <div class="feature-files">
+              <small>Affected files: ${recommendation.affectedFiles.length}</small>
+            </div>
+          `;
+            recommendationsList.appendChild(recommendationItem);
+          });
+        }
+      }
+
+      // Extend project
+      async function extendProject() {
+        const existingProjectContext = document.getElementById(
+          "existingProjectContext"
+        ).value;
+        const existingFiles = document.getElementById("existingFiles").files;
+        const newFeatures = document
+          .getElementById("newFeatures")
+          .value.split("\n")
+          .filter((line) => line.trim() !== "")
+          .map((line) => {
+            const [name, ...descriptionParts] = line.split(":");
+            return {
+              name: name.trim(),
+              description: descriptionParts.join(":").trim() || name.trim(),
+            };
+          });
+
+        if (existingFiles.length === 0) {
+          showToast(
+            "Please select at least one file from the existing project",
+            "warning"
+          );
+          return;
+        }
+
+        if (newFeatures.length === 0) {
+          showToast(
+            "Please specify at least one new feature to add",
+            "warning"
+          );
+          return;
+        }
+
+        const formData = new FormData();
+        formData.append("projectContext", existingProjectContext);
+        formData.append(
+          "newRequirements",
+          JSON.stringify({ features: newFeatures })
+        );
+
+        for (let i = 0; i < existingFiles.length; i++) {
+          formData.append("files", existingFiles[i]);
+        }
+
+        try {
+          showToast("Extending project...", "info");
+
+          const response = await fetch(`${apiEndpoint}/api/extend`, {
+            method: "POST",
+            body: formData,
+          });
+
+          const result = await response.json();
+
+          if (response.ok) {
+            if (result.needsClarification) {
+              // Show clarification modal
+              showClarificationModal(
+                result.interactionId,
+                result.questions,
+                result
+              );
+            } else {
+              displayExtensionResult(result);
+              showToast("Project extended successfully", "success");
+            }
+          } else {
+            showToast(`Error: ${result.error}`, "error");
+          }
+        } catch (error) {
+          console.error("Error extending project:", error);
+          showToast("Error extending project", "error");
+        }
+      }
+
+      // Display extension result
+      function displayExtensionResult(result) {
+        // Display integration plan
+        const integrationPlan = document.getElementById("integrationPlan");
+        integrationPlan.innerHTML = `
+        <h5>Integration Strategy</h5>
+        <p><strong>Approach:</strong> ${result.strategy.approach}</p>
+        <div class="mt-3">
+          <h6>Integration Points</h6>
+          <ul>
+            ${result.integrationPoints
+              .map(
+                (point) => `<li>${point.description} (${point.location})</li>`
+              )
+              .join("")}
+          </ul>
+        </div>
+      `;
+
+        // Display modified files
+        const modifiedFiles = result.modifiedFiles;
+        const modifiedFilesList = document.getElementById("modifiedFilesList");
+        modifiedFilesList.innerHTML = "";
+
+        if (modifiedFiles.length === 0) {
+          modifiedFilesList.innerHTML = `
+          <div class="text-center py-5">
+            <i class="bi bi-file-earmark-code" style="font-size: 3rem; color: #ccc;"></i>
+            <p class="mt-3">No files modified</p>
+          </div>
+        `;
+        } else {
+          modifiedFiles.forEach((file) => {
+            const fileItem = document.createElement("div");
+            fileItem.className = "file-item";
+            fileItem.innerHTML = `
+            <div class="file-header">
+              <div class="file-name">${file.path}</div>
+              <div class="file-actions">
+                <button class="btn btn-sm btn-outline-primary" onclick="downloadFile('${
+                  file.path
+                }', \`${escapeHtml(file.content)}\`)">
+                  <i class="bi bi-download"></i>
+                </button>
+                <button class="btn btn-sm btn-outline-secondary" onclick="viewFile('${
+                  file.path
+                }', \`${escapeHtml(file.content)}\`)">
+                  <i class="bi bi-eye"></i>
+                </button>
+              </div>
+            </div>
+            <div class="file-content code-block">${escapeHtml(
+              file.content
+            )}</div>
+          `;
+            modifiedFilesList.appendChild(fileItem);
+          });
+        }
+
+        // Display new files
+        const newFiles = result.newFiles;
+        const newFilesList = document.getElementById("newFilesList");
+        newFilesList.innerHTML = "";
+
+        if (newFiles.length === 0) {
+          newFilesList.innerHTML = `
+          <div class="text-center py-5">
+            <i class="bi bi-file-plus" style="font-size: 3rem; color: #ccc;"></i>
+            <p class="mt-3">No new files created</p>
+          </div>
+        `;
+        } else {
+          newFiles.forEach((file) => {
+            const fileItem = document.createElement("div");
+            fileItem.className = "file-item";
+            fileItem.innerHTML = `
+            <div class="file-header">
+              <div class="file-name">${file.path}</div>
+              <div class="file-actions">
+                <button class="btn btn-sm btn-outline-primary" onclick="downloadFile('${
+                  file.path
+                }', \`${escapeHtml(file.content)}\`)">
+                  <i class="bi bi-download"></i>
+                </button>
+                <button class="btn btn-sm btn-outline-secondary" onclick="viewFile('${
+                  file.path
+                }', \`${escapeHtml(file.content)}\`)">
+                  <i class="bi bi-eye"></i>
+                </button>
+              </div>
+            </div>
+            <div class="file-content code-block">${escapeHtml(
+              file.content
+            )}</div>
+          `;
+            newFilesList.appendChild(fileItem);
+          });
+        }
+
+        // Display validation
+        if (result.validation) {
+          const validationClass = result.validation.success
+            ? "success"
+            : "failed";
+          const validationIcon = result.validation.success
+            ? "bi-check-circle"
+            : "bi-x-circle";
+
+          const validationDiv = document.createElement("div");
+          validationDiv.className = `validation-result ${validationClass}`;
+          validationDiv.innerHTML = `
+          <div class="validation-header">
+            <div class="validation-title">Integration Validation</div>
+            <div class="validation-icon">
+              <i class="bi ${validationIcon}"></i>
+            </div>
+          </div>
+          <div>${
+            result.validation.success
+              ? "Integration validated successfully"
+              : "Integration validation failed"
+          }</div>
+        `;
+
+          newFilesList.appendChild(validationDiv);
+        }
+
+        // Add sandbox button
+        const sandboxButton = document.createElement("button");
+        sandboxButton.className = "btn btn-outline-primary";
+        sandboxButton.innerHTML =
+          '<i class="bi bi-terminal"></i> Open in Sandbox';
+        sandboxButton.onclick = () =>
+          openSandboxModal({
+            name: "Extended Project",
+            files: [
+              ...result.modifiedFiles.map((f) => ({
+                path: f.path,
+                content: f.content,
+              })),
+              ...result.newFiles,
+            ],
+          });
+
+        newFilesList.appendChild(sandboxButton);
+      }
+
+      // Load learning data
+      async function loadLearningData() {
+        try {
+          // Load agent performance
+          const response = await fetch(`${apiEndpoint}/api/learning`);
+          const learningData = await response.json();
+
+          displayAgentPerformance(learningData);
+          displayLearningPatterns(learningData);
+        } catch (error) {
+          console.error("Error loading learning data:", error);
+          showToast("Error loading learning data", "error");
+        }
+      }
+
+      // Display agent performance
+      function displayAgentPerformance(learningData) {
+        const agentPerformance = document.getElementById("agentPerformance");
+        agentPerformance.innerHTML = "";
+
+        // This is a simplified version - in a real implementation,
+        // we would have more detailed agent performance data
+        const agents = [
+          {
+            name: "DeepSeek-R1-0528",
+            description: "Code review, document analysis, planning",
+            uses: 42,
+            successRate: 0.94,
+          },
+          {
+            name: "DeepSeek-V3",
+            description: "Efficient powerhouse for coding tasks",
+            uses: 38,
+            successRate: 0.91,
+          },
+          {
+            name: "Qwen3-Coder-480B",
+            description: "Specialized coding model",
+            uses: 56,
+            successRate: 0.96,
+          },
+        ];
+
+        agents.forEach((agent) => {
+          const agentCard = document.createElement("div");
+          agentCard.className = "agent-card";
+          agentCard.innerHTML = `
+          <div class="agent-header">
+            <div class="agent-name">${agent.name}</div>
+          </div>
+          <div class="agent-description">${agent.description}</div>
+          <div class="agent-stats mt-3">
+            <div class="agent-stat">
+              <div class="agent-stat-value">${agent.uses}</div>
+              <div class="agent-stat-label">Uses</div>
+            </div>
+            <div class="agent-stat">
+              <div class="agent-stat-value">${Math.round(
+                agent.successRate * 100
+              )}%</div>
+              <div class="agent-stat-label">Success</div>
+            </div>
+          </div>
+          <div class="progress mt-2">
+            <div class="progress-bar bg-success" style="width: ${
+              agent.successRate * 100
+            }%"></div>
+          </div>
+        `;
+          agentPerformance.appendChild(agentCard);
+        });
+      }
+
+      // Display learning patterns
+      function displayLearningPatterns(learningData) {
+        const learningPatterns = document.getElementById("learningPatterns");
+        learningPatterns.innerHTML = "";
+
+        // This is a simplified version - in a real implementation,
+        // we would display more detailed pattern information
+        const patterns = [
+          {
+            type: "react-app",
+            description: "React applications",
+            successRate: 0.95,
+            uses: 24,
+          },
+          {
+            type: "node-api",
+            description: "Node.js APIs",
+            successRate: 0.92,
+            uses: 18,
+          },
+          {
+            type: "full-stack",
+            description: "Full-stack applications",
+            successRate: 0.89,
+            uses: 12,
+          },
+        ];
+
+        patterns.forEach((pattern) => {
+          const patternCard = document.createElement("div");
+          patternCard.className = "agent-card";
+          patternCard.innerHTML = `
+          <div class="agent-header">
+            <div class="agent-name">${pattern.type}</div>
+          </div>
+          <div class="agent-description">${pattern.description}</div>
+          <div class="agent-stats mt-3">
+            <div class="agent-stat">
+              <div class="agent-stat-value">${pattern.uses}</div>
+              <div class="agent-stat-label">Uses</div>
+            </div>
+            <div class="agent-stat">
+              <div class="agent-stat-value">${Math.round(
+                pattern.successRate * 100
+              )}%</div>
+              <div class="agent-stat-label">Success</div>
+            </div>
+          </div>
+          <div class="progress mt-2">
+            <div class="progress-bar bg-info" style="width: ${
+              pattern.successRate * 100
+            }%"></div>
+          </div>
+        `;
+          learningPatterns.appendChild(patternCard);
+        });
+      }
+
+      // Download file
+      function downloadFile(filename, content) {
+        const element = document.createElement("a");
+        element.setAttribute(
+          "href",
+          "data:text/plain;charset=utf-8," + encodeURIComponent(content)
+        );
+        element.setAttribute("download", filename);
+        element.style.display = "none";
+        document.body.appendChild(element);
+        element.click();
+        document.body.removeChild(element);
+      }
+
+      // Download all files
+      function downloadAllFiles(files) {
+        // In a real implementation, this would create a ZIP file
+        // For now, we'll just download each file individually
+        files.forEach((file) => {
+          downloadFile(file.path, file.content);
+        });
+      }
+
+      // View file
+      function viewFile(filename, content) {
+        // In a real implementation, this would open a modal with the file content
+        // For now, we'll just show an alert
+        alert(`Viewing file: ${filename}\n\nContent:\n${content}`);
+      }
+
+      // Sandbox-related variables and functions
+      let sandboxBrowser = null;
+      let currentSandboxId = null;
+      let currentProjectFiles = [];
+
+      // Function to open sandbox modal with project
+      async function openSandboxModal(project) {
+        currentProjectFiles = project.files || [];
+
+        // Create a sandbox for the project
+        try {
+          showToast("Creating sandbox...", "info");
+
+          const response = await fetch(`${apiEndpoint}/api/sandbox/create`, {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              projectName: project.name || "Project",
+              template: project.type === "web-app" ? "react" : "node",
+            }),
+          });
+
+          const result = await response.json();
+
+          if (response.ok) {
+            currentSandboxId = result.sandbox.id;
+
+            // Initialize the browser sandbox
+            sandboxBrowser = new SandboxBrowser();
+            await sandboxBrowser.initialize(result.session);
+
+            // Upload project files
+            if (currentProjectFiles.length > 0) {
+              const formData = new FormData();
+              currentProjectFiles.forEach((file) => {
+                const blob = new Blob([file.content], { type: "text/plain" });
+                formData.append("files", blob, file.path);
+              });
+
+              await fetch(
+                `${apiEndpoint}/api/sandbox/${currentSandboxId}/upload`,
+                {
+                  method: "POST",
+                  body: formData,
+                }
+              );
+            }
+
+            // Show the sandbox modal
+            const modal = new bootstrap.Modal(
+              document.getElementById("sandboxModal")
+            );
+            modal.show();
+
+            // Set up the sandbox UI
+            document.getElementById("sandbox-loading").style.display = "none";
+            document.getElementById("sandbox-content").style.display = "block";
+
+            // Populate file list
+            populateFileList();
+
+            showToast("Sandbox ready", "success");
+          } else {
+            showToast(`Error: ${result.error}`, "error");
+          }
+        } catch (error) {
+          console.error("Error opening sandbox:", error);
+          showToast("Error opening sandbox", "error");
+        }
+      }
+
+      // Populate file list
+      async function populateFileList() {
+        try {
+          const response = await fetch(
+            `${apiEndpoint}/api/sandbox/${currentSandboxId}/execute`,
+            {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({
+                command: "find /project/sandbox -type f | sort",
+              }),
+            }
+          );
+
+          const result = await response.json();
+
+          if (response.ok) {
+            const files = result.stdout.trim().split("\n");
+            const fileSelect = document.getElementById("sandbox-file-select");
+
+            // Clear existing options
+            fileSelect.innerHTML = '<option value="">Select a file...</option>';
+
+            // Add file options
+            for (const filePath of files) {
+              if (filePath) {
+                const fileName = filePath.replace("/project/sandbox/", "");
+                const option = document.createElement("option");
+                option.value = fileName;
+                option.textContent = fileName;
+                fileSelect.appendChild(option);
+              }
+            }
+          }
+        } catch (error) {
+          console.error("Error populating file list:", error);
+        }
+      }
+
+      // Clarification modal variables and functions
+      let currentInteractionId = null;
+      let currentQuestions = [];
+      let currentQuestionIndex = 0;
+      let isFollowUp = false;
+
+      // Function to show clarification modal
+      function showClarificationModal(interactionId, questions, result = {}) {
+        currentInteractionId = interactionId;
+        currentQuestions = questions;
+        currentQuestionIndex = 0;
+        isFollowUp = result.isFollowUp || false;
+
+        const modal = new bootstrap.Modal(
+          document.getElementById("clarificationModal")
+        );
+        const questionsContainer = document.getElementById(
+          "clarificationQuestions"
+        );
+        const clarificationTitle =
+          document.getElementById("clarificationTitle");
+        const clarificationIntro =
+          document.getElementById("clarificationIntro");
+        const clarificationProgress = document.getElementById(
+          "clarificationProgress"
+        );
+        const clarificationContext = document.getElementById(
+          "clarificationContext"
+        );
+        const clarificationContextText = document.getElementById(
+          "clarificationContextText"
+        );
+
+        // Update title
+        if (isFollowUp) {
+          clarificationTitle.innerHTML =
+            '<i class="bi bi-arrow-repeat"></i> Follow-up Questions';
+          clarificationIntro.innerHTML =
+            "<p>Thank you for your responses. We have a few more questions to ensure we fully understand your requirements:</p>";
+        } else {
+          clarificationTitle.innerHTML =
+            '<i class="bi bi-question-circle"></i> Clarification Needed';
+          clarificationIntro.innerHTML =
+            "<p>We need some additional information to better understand your requirements:</p>";
+        }
+
+        // Show progress bar
+        clarificationProgress.style.display = "block";
+        document.getElementById("currentQuestion").textContent = "1";
+        document.getElementById("totalQuestions").textContent =
+          questions.length;
+
+        // Show context if available
+        if (result.contextualMatches && result.contextualMatches.length > 0) {
+          clarificationContext.style.display = "block";
+          clarificationContextText.innerHTML = `
+          <p>Based on your description, we've identified this as a <strong>${result.contextualMatches.join(
+            ", "
+          )}</strong> project.</p>
+          <div>
+            ${result.contextualMatches
+              .map((match) => `<span class="context-badge">${match}</span>`)
+              .join("")}
+          </div>
+        `;
+        } else {
+          clarificationContext.style.display = "none";
+        }
+
+        // Clear and populate questions
+        questionsContainer.innerHTML = "";
+
+        questions.forEach((question, index) => {
+          const questionDiv = document.createElement("div");
+          questionDiv.className = `question-card ${
+            index === 0 ? "active" : ""
+          }`;
+          questionDiv.id = `question-${index}`;
+          questionDiv.style.display = index === 0 ? "block" : "none";
+
+          // Add a hint for some questions
+          let hint = "";
+          if (question.includes("features")) {
+            hint =
+              "Example: User authentication, dashboard, reporting, notifications";
+          } else if (
+            question.includes("technology") ||
+            question.includes("framework")
+          ) {
+            hint = "Example: React, Vue, Angular, Node.js, Python, etc.";
+          } else if (
+            question.includes("design") ||
+            question.includes("style")
+          ) {
+            hint = "Example: Modern, minimalist, professional, colorful, etc.";
+          } else if (
+            question.includes("integrate") ||
+            question.includes("connect")
+          ) {
+            hint =
+              "Example: Payment gateway, email service, social media, etc.";
+          } else if (
+            question.includes("data") ||
+            question.includes("database")
+          ) {
+            hint = "Example: User profiles, transactions, products, etc.";
+          } else if (
+            question.includes("users") ||
+            question.includes("target")
+          ) {
+            hint = "Example: General public, employees, customers, etc.";
+          } else if (question.includes("deploy") || question.includes("host")) {
+            hint = "Example: AWS, Azure, Google Cloud, Vercel, etc.";
+          } else if (
+            question.includes("timeline") ||
+            question.includes("deadline")
+          ) {
+            hint = "Example: 1 week, 1 month, 3 months, etc.";
+          }
+
+          questionDiv.innerHTML = `
+          <div class="question-text">${index + 1}. ${question}</div>
+          ${hint ? `<div class="question-hint">${hint}</div>` : ""}
+          <textarea class="form-control" id="response-${index}" rows="3" placeholder="Enter your response here..."></textarea>
+        `;
+          questionsContainer.appendChild(questionDiv);
+        });
+
+        // Show the modal
+        modal.show();
+
+        // Focus on the first textarea
+        setTimeout(() => {
+          document.getElementById("response-0").focus();
+        }, 500);
+      }
+
+      // Handle clarification submission
+      document
+        .getElementById("submitClarification")
+        .addEventListener("click", async function () {
+          const responses = [];
+
+          // Collect all responses
+          for (let i = 0; i < currentQuestions.length; i++) {
+            const response = document
+              .getElementById(`response-${i}`)
+              .value.trim();
+            responses.push(response);
+          }
+
+          // Check if all required questions are answered
+          const unansweredQuestions = responses.filter((r) => !r).length;
+          if (unansweredQuestions > 0) {
+            showToast(
+              `Please answer all questions (${unansweredQuestions} remaining)`,
+              "warning"
+            );
+            return;
+          }
+
+          try {
+            showToast("Submitting clarification...", "info");
+
+            const response = await fetch(
+              `${apiEndpoint}/api/clarification/response`,
+              {
+                method: "POST",
+                headers: {
+                  "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                  interactionId: currentInteractionId,
+                  responses,
+                }),
+              }
+            );
+
+            const result = await response.json();
+
+            if (response.ok) {
+              // Hide the modal
+              const modal = bootstrap.Modal.getInstance(
+                document.getElementById("clarificationModal")
+              );
+              modal.hide();
+
+              // Display the result
+              if (result.type === "creation") {
+                displayCreationResult(result);
+              } else if (result.type === "analysis") {
+                displayAnalysisResult(result);
+              } else if (result.type === "extension") {
+                displayExtensionResult(result);
+              }
+
+              showToast(
+                "Project requirements clarified successfully",
+                "success"
+              );
+            } else {
+              showToast(`Error: ${result.error}`, "error");
+            }
+          } catch (error) {
+            console.error("Error submitting clarification:", error);
+            showToast("Error submitting clarification", "error");
+          }
+        });
+
+      // Add navigation for multi-question clarification
+      document.addEventListener("keydown", function (e) {
+        if (
+          document
+            .getElementById("clarificationModal")
+            .classList.contains("show")
+        ) {
+          if (e.key === "Enter" && e.ctrlKey) {
+            // Ctrl+Enter to submit
+            document.getElementById("submitClarification").click();
+          } else if (
+            e.key === "ArrowDown" &&
+            currentQuestionIndex < currentQuestions.length - 1
+          ) {
+            // Arrow down to go to next question
+            navigateQuestion(currentQuestionIndex + 1);
+          } else if (e.key === "ArrowUp" && currentQuestionIndex > 0) {
+            // Arrow up to go to previous question
+            navigateQuestion(currentQuestionIndex - 1);
+          }
+        }
+      });
+
+      function navigateQuestion(index) {
+        // Hide current question
+        document
+          .getElementById(`question-${currentQuestionIndex}`)
+          .classList.remove("active");
+        document.getElementById(
+          `question-${currentQuestionIndex}`
+        ).style.display = "none";
+
+        // Show new question
+        currentQuestionIndex = index;
+        document
+          .getElementById(`question-${currentQuestionIndex}`)
+          .classList.add("active");
+        document.getElementById(
+          `question-${currentQuestionIndex}`
+        ).style.display = "block";
+
+        // Update progress
+        document.getElementById("currentQuestion").textContent =
+          currentQuestionIndex + 1;
+
+        // Focus on the textarea
+        document.getElementById(`response-${currentQuestionIndex}`).focus();
+
+        // Update progress bar
+        const progress =
+          ((currentQuestionIndex + 1) / currentQuestions.length) * 100;
+        document.querySelector(
+          "#clarificationProgress .progress-bar"
+        ).style.width = `${progress}%`;
+      }
+
+      // Escape HTML
+      function escapeHtml(unsafe) {
+        return unsafe
+          .replace(/&/g, "&amp;")
+          .replace(/</g, "&lt;")
+          .replace(/>/g, "&gt;")
+          .replace(/"/g, "&quot;")
+          .replace(/'/g, "&#039;");
+      }
+    </script>
+  </body>
+</html>

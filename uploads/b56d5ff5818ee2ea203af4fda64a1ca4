@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dave Mode Test Project</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="container">
+      <header class="header">
+        <h1>🚀 Dave Mode Test Project</h1>
+        <p>
+          A test application for validating Dave Mode analysis and sandbox
+          creation
+        </p>
+      </header>
+
+      <main class="main">
+        <section class="card">
+          <h2>📊 API Test Dashboard</h2>
+          <div class="button-group">
+            <button onclick="testDataAPI()" class="btn btn-primary">
+              Test Data API
+            </button>
+            <button onclick="testExternalAPI()" class="btn btn-secondary">
+              Test External API
+            </button>
+            <button onclick="testUserAPI()" class="btn btn-warning">
+              Test User API
+            </button>
+            <button onclick="testConfigAPI()" class="btn btn-danger">
+              Test Config API
+            </button>
+          </div>
+        </section>
+
+        <section class="card">
+          <h2>🎯 Dave Mode Analysis Targets</h2>
+          <div class="analysis-grid">
+            <div class="analysis-item">
+              <h3>Security Issues</h3>
+              <ul>
+                <li>Missing input validation</li>
+                <li>JSON parsing without error handling</li>
+                <li>Potential injection vulnerabilities</li>
+              </ul>
+            </div>
+            <div class="analysis-item">
+              <h3>Performance Issues</h3>
+              <ul>
+                <li>Synchronous file operations</li>
+                <li>Missing async/await patterns</li>
+                <li>No request rate limiting</li>
+              </ul>
+            </div>
+            <div class="analysis-item">
+              <h3>Code Quality Issues</h3>
+              <ul>
+                <li>Console.log in production</li>
+                <li>Unused variables</li>
+                <li>Mixed module syntax</li>
+              </ul>
+            </div>
+          </div>
+        </section>
+
+        <section class="card">
+          <h2>📝 Test Results</h2>
+          <div id="results" class="results-area">
+            <p>
+              Click the buttons above to test API endpoints and see results
+              here.
+            </p>
+          </div>
+        </section>
+      </main>
+
+      <footer class="footer">
+        <p>
+          Built for Dave Mode testing • Contains intentional bugs for analysis
+        </p>
+      </footer>
+    </div>
+
+    <script src="app.js"></script>
+  </body>
+</html>
